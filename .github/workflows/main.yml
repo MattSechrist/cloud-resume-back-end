@@ -1,4 +1,4 @@
-name: cloud_resume_front_end
+name: cloud_resume_back_end
 on:
   push:
     branches:
