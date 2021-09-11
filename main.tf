@@ -12,7 +12,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_s3_bucket" {
+resource "aws_s3_bucket" "b"{
   bucket = "mss_test_bucket_sfdlkjfalskfjsdlkj"
   acl    = "private"
 
