@@ -11,7 +11,4 @@ terraform {
 resource "aws_s3_bucket" "b" {
   bucket = "mss444lskfjsdlkj"
   acl    = "private"
-  tags   = {
-    test = "works"
-  }
 }
