@@ -9,6 +9,6 @@ terraform {
 }
 
 resource "aws_s3_bucket" "b" {
-  bucket = "mss_test_bucket_sfdlkjfalskfjsdlkj"
+  bucket = "mss444lskfjsdlkj"
   acl    = "private"
 }
