@@ -8,16 +8,7 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
-
-resource "aws_s3_bucket" "b"{
-  bucket = "mss_test_bucket_sfdlkjfalskfjsdlkj"
+resource "aws_s3_bucket" "mss_test_bucket_sfdlkjfalskfjsdlkj" {
+   bucket = "mss_test_bucket_sfdlkjfalskfjsdlkj"
   acl    = "private"
-
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-  }
 }
