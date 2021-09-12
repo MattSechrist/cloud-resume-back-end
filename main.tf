@@ -18,15 +18,11 @@ terraform {
       name = "cloud_resume_back_end"
     }
   }
-}
 
 # S3 bucket for redirecting non-www to www.
 resource "aws_s3_bucket" "www_root_bucket" {
   bucket = "www.matthewsechrist.cloud"
-  acl    = "public-read"
-  policy = templatefile("templates/s3-policy.json", { bucket = "www.matthewsechrist.cloud" })
 
-  website {
     redirect_all_requests_to = "https://matthewsechrist.cloud"
   }
 
