@@ -22,6 +22,4 @@ terraform {
 # S3 bucket for redirecting non-www to www.
 resource "aws_s3_bucket" "www_root_bucket" {
   bucket = "www.matthewsechrist.cloud"
-
-    redirect_all_requests_to = "https://matthewsechrist.cloud"
-  }
+}
