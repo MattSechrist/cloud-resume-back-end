@@ -82,6 +82,8 @@ jobs:
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
+      env:
+        args: '-var-file="tf\terraform.tfvars"'
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
@@ -95,7 +97,6 @@ jobs:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
         github-token: ${{ secrets.TF_API_TOKEN }}
-        args: '-var-file="tf\terraform.tfvars"'
         script: |
           const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
