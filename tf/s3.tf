@@ -1,6 +1,6 @@
 # S3 bucket for website.
 resource "aws_s3_bucket" "$${var.bucket_name}_bucket" {
-  bucket = "${var.bucket_name}"
+  bucket = "$${var.bucket_name}"
   acl    = "public-read"
   policy = templatefile("templates/s3-policy.json", { bucket = "$${var.bucket_name}" })
 
