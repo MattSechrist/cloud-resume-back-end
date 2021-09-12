@@ -1,31 +1,21 @@
 terraform {
-backend "remote" {
-    organization = "matthewsechrist"
-
-    workspaces {
-      name = "cloud_resume_back_end"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.26.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.0.1"
     }
   }
-}
-provider "aws" {
-  region = "us-east-1"
-}
+  required_version = ">= 0.14"
 
-resource "aws_s3_bucket" "main_bucket" {
-  bucket = "${var.bucket_name}"
-  acl    = "public-read"
-  policy = templatefile("templates/s3-policy.json", { bucket = "${var.bucket_name}" })
+  backend "remote" {
+    organization = "REPLACE_ME"
 
-  cors_rule {
-    allowed_headers = ["Authorization", "Content-Length"]
-    allowed_methods = ["GET", "POST"]
-    allowed_origins = ["https://${var.domain_name}"]
-    max_age_seconds = 3000
+    workspaces {
+      name = "gh-actions-demo"
+    }
   }
-
-  website {
-    index_document = "index.html"
-  }
-
-  tags = var.common_tags
 }
