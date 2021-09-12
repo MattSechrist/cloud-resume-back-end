@@ -95,6 +95,7 @@ jobs:
       if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        args: '-var-file="tf\terraform.tfvars"'
       with:
         github-token: ${{ secrets.TF_API_TOKEN }}
         script: |
