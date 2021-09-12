@@ -9,7 +9,7 @@ terraform {
 }
 
 module "s3" {
-  source = "tf/s3.tf"
+  source = "./tf/s3.tf"
 }
 
 resource "aws_s3_bucket" "b" {
