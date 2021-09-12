@@ -8,6 +8,10 @@ terraform {
   }
 }
 
+module "s3" {
+  source = "tf/s3.tf"
+}
+
 resource "aws_s3_bucket" "b" {
   bucket = "mss444lskfjsdlkj"
   acl    = "private"
