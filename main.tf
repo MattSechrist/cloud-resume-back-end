@@ -7,3 +7,7 @@ terraform {
     }
   }
 }
+
+module "tf_folder" {
+   source = "./tf/"
+}
