@@ -1,4 +1,10 @@
 terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.26.0"
+    }
+  }
   backend "remote" {
     organization = "matthewsechrist"
 
@@ -26,4 +32,3 @@ resource "aws_s3_bucket" "main_bucket" {
 
   tags = var.common_tags
 }
-
