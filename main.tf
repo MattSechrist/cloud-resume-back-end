@@ -11,7 +11,7 @@ terraform {
     organization = "matthewsechrist"
 
     workspaces {
-      name = "cloud_resume_back_end2"
+      name = "cloud_resume_back_end"
     }
   }
 }
