@@ -8,9 +8,9 @@ terraform {
   }
 }
 
-module "tf_folder" {
-  source = "./tf/"
-}
+#module "tf_folder" {
+#  source = "./tf/"
+#}
 
 resource "aws_s3_bucket" "b" {
   bucket = "mss444lskfjsdlkj"
