@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "main_bucket" {
 }
 
 # S3 bucket for redirecting www to non-www.
-resource "aws_s3_bucket" "www.main_bucket" {
+resource "aws_s3_bucket" "www_main_bucket" {
   bucket = var.bucket_name
   acl    = "public-read"
   policy = templatefile("templates/s3-policy.json", { bucket = var.bucket_name })
