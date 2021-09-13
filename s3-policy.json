@@ -8,7 +8,7 @@
             "Resource": "arn:aws:s3:::www.matthewsechrist.cloud/*",
             "Condition": {
                 "StringEquals": {
-                    "${{ secrets.REFERER_KEY }}": "${{ secrets.REFERER_VALUE }}"
+                    ${{ secrets.REFERER_KEY }}: ${{ secrets.REFERER_VALUE }}
                 }
             }
         }
