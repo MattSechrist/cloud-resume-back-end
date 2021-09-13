@@ -73,13 +73,10 @@ terraform {
 resource "aws_s3_bucket" "www_bucket" {
   bucket = var.bucket_name
   acl    = "public-read"
-  policy = templatefile("templates/s3-policy.json", { bucket = "www."+var.bucket_name})
+  policy = templatefile("templates/s3-policy.json", { bucket = var.www_bucket_name })
 
   website {
     redirect_all_requests_to = "https://"+var.domain_name
   }
-
   tags = var.common_tags
-
-}
-
+  }
