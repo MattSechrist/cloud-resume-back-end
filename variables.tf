@@ -1,6 +1,7 @@
 variable "domain_name" {
   type        = string
   description = "The domain name for the website."
+  sensitive = true
 }
 variable "www_domain_name" {
   type        = string
