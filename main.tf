@@ -16,9 +16,9 @@ terraform {
   }
 }
 
-  provider "aws" {
-    region = "us-east-1"
-  }
+provider "aws" {
+  region = "us-east-1"
+}
 
 # S3 bucket for website.
 #esource "aws_s3_bucket" "www_bucket" {
