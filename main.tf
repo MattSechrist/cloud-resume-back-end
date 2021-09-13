@@ -71,7 +71,7 @@ terraform {
 
 # S3 bucket for redirecting non-www to www.
 resource "aws_s3_bucket" "www_bucket" {
-  bucket = var.bucket_name
+  bucket = var.www_domain_name
   acl    = "public-read"
   policy = file("s3-policy.json")
 
