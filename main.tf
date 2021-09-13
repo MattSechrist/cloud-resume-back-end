@@ -76,7 +76,7 @@ resource "aws_s3_bucket" "www_bucket" {
   policy = "templates/s3-policy.json"
 
   website {
-    redirect_all_requests_to = format("%s%s","https://",var.domain_name)
+    redirect_all_requests_to = format("%s%s","https://",bucket)
   }
   tags = var.common_tags
 }
