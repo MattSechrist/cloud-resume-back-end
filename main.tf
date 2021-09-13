@@ -7,10 +7,6 @@ terraform {
   }
   required_version = ">= 0.14"
 
-  provider "aws" {
-    region = "us-east-1"
-  }
-
   backend "remote" {
     organization = "matthewsechrist"
 
@@ -19,6 +15,11 @@ terraform {
     }
   }
 }
+
+  provider "aws" {
+    region = "us-east-1"
+  }
+
 # S3 bucket for website.
 #esource "aws_s3_bucket" "www_bucket" {
 # bucket = "www.${var.bucket_name}2"
