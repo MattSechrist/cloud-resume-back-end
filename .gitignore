@@ -3,3 +3,4 @@ s3-policy.json
 *.0_x5
 .terraform/terraform.tfstate
 *.tfvars
+terraform/.terraform/terraform.tfstate
