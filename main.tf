@@ -75,10 +75,12 @@ provider "aws" {
 #
 
 # S3 bucket for redirecting non-www to www.
-resource "aws_s3_bucket_policy" "policy" {
+
+
+resource "aws_s3_bucket_policy" "www_bucket" {
   bucket = var.www_domain_name
 
-policy = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17"
     Id      = "MYBUCKETPOLICY"
     Statement = [
@@ -86,10 +88,10 @@ policy = jsonencode({
         Effect    = "Allow"
         Principal = "*"
         Action    = "s3:GetObject",
-        Resource = "arn:aws:s3:::${var.www_bucket_name}/*",
+        Resource  = "arn:aws:s3:::${var.www_domain_name}/*",
         Condition = {
           StringEquals = {
-            "aws:${var.header_name}": "${var.header_value}"
+            "aws:${var.header_name}" : "${var.header_value}"
           }
         }
       },
@@ -100,7 +102,6 @@ policy = jsonencode({
 resource "aws_s3_bucket" "www_bucket" {
   bucket = var.www_domain_name
   acl    = "public-read"
-  policy = file("s3-policy.json")
 
   website {
     redirect_all_requests_to = "https://matthewsechrist.cloud"
