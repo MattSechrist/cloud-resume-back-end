@@ -7,6 +7,7 @@ terraform {
   }
   required_version = ">= 0.14"
 
+  #Using Terraform Cloud to save Workflow states 
   backend "remote" {
     organization = "matthewsechrist"
 
@@ -82,7 +83,7 @@ resource "aws_s3_bucket_policy" "www_bucket" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Id      = "MYBUCKETPOLICY"
+    Id      = "S3_Static_Website_Bucket_policy"
     Statement = [
       {
         Effect    = "Allow"
@@ -91,7 +92,7 @@ resource "aws_s3_bucket_policy" "www_bucket" {
         Resource  = "arn:aws:s3:::${var.www_domain_name}/*",
         Condition = {
           StringEquals = {
-            "aws:${var.header_name}" : "${var.header_value}"
+            "${var.header_name}" : "${var.header_value}"
           }
         }
       },
