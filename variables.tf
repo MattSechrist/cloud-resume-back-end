@@ -16,11 +16,13 @@ variable "common_tags" {
 }
 
 variable "header_name" {
+  type        = string
   description = "The custom header name for the CloudFront origin."
-  sensitive = true
+  sensitive   = true
 }
 
 variable "header_value" {
+  type        = string
   description = "The custom header value for the CloudFront origin."
-  sensitive = true
+  sensitive   = true
 }
