@@ -15,3 +15,11 @@ variable "bucket_name" {
 variable "common_tags" {
   description = "Common tags you want applied to all components."
 }
+
+variable "header_name" {
+  description = "The custom header name for the CloudFront origin."
+}
+
+variable "header_value" {
+  description = "The custom header value for the CloudFront origin."
+}
