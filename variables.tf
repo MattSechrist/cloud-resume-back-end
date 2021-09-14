@@ -1,7 +1,6 @@
 variable "domain_name" {
   type        = string
   description = "The domain name for the website."
-  sensitive = true
 }
 variable "www_domain_name" {
   type        = string
@@ -18,8 +17,10 @@ variable "common_tags" {
 
 variable "header_name" {
   description = "The custom header name for the CloudFront origin."
+  sensitive = true
 }
 
 variable "header_value" {
   description = "The custom header value for the CloudFront origin."
+  sensitive = true
 }
