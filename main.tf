@@ -78,12 +78,12 @@ provider "aws" {
 # S3 bucket for redirecting non-www to www.
 
 
-resource "aws_s3_bucket_policy" "www_bucket" {
+resource "aws_s3_bucket_policy" "www_domain_name" {
   bucket = var.www_domain_name
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Id      = "S3_Static_Website_Bucket_policy"
+    Id      = "S3_Static_Website_Bucket_Policy"
     Statement = [
       {
         Effect    = "Allow"
@@ -100,12 +100,12 @@ resource "aws_s3_bucket_policy" "www_bucket" {
   })
 }
 
-resource "aws_s3_bucket" "www_bucket" {
+resource "aws_s3_bucket" "www_domain_name" {
   bucket = var.www_domain_name
   acl    = "public-read"
 
   website {
-    redirect_all_requests_to = "https://matthewsechrist.cloud"
+    redirect_all_requests_to = var.domain_name
   }
   tags = var.common_tags
 }
