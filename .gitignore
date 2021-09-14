@@ -1,8 +1,5 @@
-
+s3-policy.json
 .terraform.lock.hcl
 *.0_x5
 .terraform/terraform.tfstate
 *.tfvars
-*.tfvars
-*.tfvars
-s3-policy.json
