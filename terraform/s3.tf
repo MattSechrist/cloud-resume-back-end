@@ -1,5 +1,8 @@
-resource "aws_s3_bucket_policy" "www_domain_name" {
-  bucket = var.www_domain_name
+resource "aws_s3_bucket_policy" "public_bucket_policy" {
+
+  for_each = var.buckets
+
+  bucket = each.value
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -9,10 +12,10 @@ resource "aws_s3_bucket_policy" "www_domain_name" {
         Effect    = "Allow"
         Principal = "*"
         Action    = "s3:GetObject",
-        Resource  = "arn:aws:s3:::${var.www_domain_name}/*",
+        Resource  = "arn:aws:s3:::${each.value}/*",
         Condition = {
           StringEquals = {
-            "${var.header_name}" : "${var.header_value}"
+            "${var.http_header.key}" : "${var.http_header.value}"
           }
         }
       },
@@ -20,20 +23,38 @@ resource "aws_s3_bucket_policy" "www_domain_name" {
   })
 }
 
-resource "aws_s3_bucket" "www_domain_name" {
-  bucket = var.www_domain_name
+resource "aws_s3_bucket" "create_www_domain_bucket" {
+  bucket = lookup(var.buckets, "www_bucket_name")
   acl    = "public-read"
+  lifecycle {
+    prevent_destroy = true
+  }
 
   website {
-    redirect_all_requests_to = var.domain_name
+    redirect_all_requests_to = lookup(var.domains, "domain_name")
   }
-  tags = var.common_tags
 }
 resource "aws_s3_object_copy" "website_files" {
 
   for_each = var.website_files
 
-  bucket = var.bucket_name
+  bucket = lookup(var.buckets, "bucket_name")
   key    = each.key
   source = each.value
+}
+
+# S3 bucket for website.
+resource "aws_s3_bucket" "create_domain_bucket" {
+  bucket = lookup(var.buckets, "bucket_name")
+  acl    = "public-read"
+  cors_rule {
+    allowed_headers = ["Authorization", "Content-Length"]
+    allowed_methods = ["GET", "POST"]
+    allowed_origins = [lookup(var.domains, "domain_name")]
+    max_age_seconds = 300
+  }
+
+  website {
+    index_document = "index.html"
+  }
 }
