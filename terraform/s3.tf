@@ -29,3 +29,11 @@ resource "aws_s3_bucket" "www_domain_name" {
   }
   tags = var.common_tags
 }
+resource "aws_s3_object_copy" "website_files" {
+
+  for_each = var.website_files
+
+  bucket = var.bucket_name
+  key    = each.key
+  source = each.value
+}
