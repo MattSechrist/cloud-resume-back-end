@@ -17,9 +17,9 @@ variable "oai" {
 }
 
 variable "name_servers" {
-  type = map(string)
+  type        = map(string)
   description = "The Route53 Name Servers"
-  sensitive = true
+  sensitive   = true
 }
 variable "s3_website_endpoint" {
   type        = string
