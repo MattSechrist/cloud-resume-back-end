@@ -15,6 +15,12 @@ variable "oai" {
   description = "The Origin Access Identity"
   sensitive   = true
 }
+
+variable "name_servers" {
+  type = map(string)
+  description = "The Route53 Name Servers"
+  sensitive = true
+}
 variable "s3_website_endpoint" {
   type        = string
   description = "The S3 Website Endpoint address"
