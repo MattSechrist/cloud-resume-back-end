@@ -1,15 +1,17 @@
+resource "aws_cloudfront_origin_access_identity" "create_oai" {
+}
+
+output "oai" {
+  value = aws_cloudfront_origin_access_identity.create_oai.cloudfront_access_identity_path
+}
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = lookup(var.buckets, "bucket_name")
-    origin_id   = var.s3_website_endpoint
+    domain_name = var.cf_origin
+    origin_id   = var.cf_origin
 
-    custom_origin_config {
-      http_port              = "80"
-      https_port             = "443"
-      origin_protocol_policy = "https-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.create_oai.cloudfront_access_identity_path
     }
-
     custom_header {
       name  = var.http_header.key_no_prefix
       value = var.http_header.value
@@ -25,7 +27,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.s3_website_endpoint
+    target_origin_id = var.cf_origin
 
     forwarded_values {
       query_string = false
@@ -50,7 +52,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = var.ssl_cert_arn
+    acm_certificate_arn      = aws_acm_certificate.create_ssl_certificate.arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }

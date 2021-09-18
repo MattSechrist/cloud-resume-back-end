@@ -2,7 +2,7 @@
 resource "aws_acm_certificate" "create_ssl_certificate" {
   domain_name               = lookup(var.buckets, "bucket_name")
   subject_alternative_names = ["*.${lookup(var.buckets, "bucket_name")}"]
-  validation_method         = "EMAIL"
+  validation_method         = "DNS"
 
   lifecycle {
     create_before_destroy = true
@@ -10,5 +10,5 @@ resource "aws_acm_certificate" "create_ssl_certificate" {
 }
 
 resource "aws_acm_certificate_validation" "create_certificate_validation" {
-  certificate_arn = var.ssl_cert_arn
+  certificate_arn = aws_acm_certificate.create_ssl_certificate.arn
 }

@@ -1,30 +1,19 @@
 variable "backup_bucket_name" {
   type        = string
   description = "The name of the backup bucket to copy files to main bucket"
-  sensitive   = true
+  #sensitive   = true
 }
 
-variable "ssl_cert_arn" {
-  type        = string
-  description = "The SSL Certificate ARN"
-  sensitive   = true
-}
-
-variable "oai" {
-  type        = string
-  description = "The Origin Access Identity"
-  sensitive   = true
-}
-
-variable "name_servers" {
-  type        = map(string)
-  description = "The Route53 Name Servers"
-  sensitive   = true
-}
 variable "s3_website_endpoint" {
   type        = string
   description = "The S3 Website Endpoint address"
-  sensitive   = true
+  #sensitive   = true
+}
+
+variable "cf_origin" {
+  type        = string
+  description = "The CloudFront Origin address"
+  #sensitive   = true
 }
 variable "http_header" {
   type        = map(string)

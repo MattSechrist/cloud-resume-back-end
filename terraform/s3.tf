@@ -10,7 +10,7 @@ resource "aws_s3_bucket_policy" "public_bucket_policy" {
     Statement = [
       {
         Effect    = "Allow"
-        Principal = "*"
+        Principal = { "AWS" : "${aws_cloudfront_origin_access_identity.create_oai.iam_arn}" },
         Action    = "s3:GetObject",
         Resource  = "arn:aws:s3:::${each.value}/*",
         Condition = {

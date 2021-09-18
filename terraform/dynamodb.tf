@@ -16,6 +16,7 @@ resource "aws_dynamodb_table_item" "create_vistor_counter_item" {
   hash_key   = aws_dynamodb_table.create_visitor_table.hash_key
   item       = <<ITEM
 {
+    "website_name" : {"S" : "cloud_resume"},
     "vistor_counter": {"N": "0"}
 }
 ITEM
