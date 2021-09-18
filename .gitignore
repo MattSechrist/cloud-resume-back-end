@@ -6,3 +6,4 @@ s3-policy.json
 terraform/.terraform/terraform.tfstate
 .DS_Store
 lambda/lambda_variables.py
+lambda/Archive.zip
