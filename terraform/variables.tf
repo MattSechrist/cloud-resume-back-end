@@ -39,7 +39,7 @@ variable "buckets" {
 variable "lambda_function_name" {
   type        = string
   description = "The Lambda function name"
-  sensitive   = true
+  #sensitive   = true
 }
 variable "lambda_s3_bucket" {
   type        = string
@@ -68,6 +68,36 @@ variable "lambda_iam_role" {
 }
 
 variable "lambda_event_type" {
+  type        = string
+  description = "The Lambda event type"
+  sensitive   = true
+}
+
+variable "my_region" {
+  type        = string
+  description = "The Lambda event type"
+  sensitive   = true
+}
+
+variable "account_id" {
+  type        = string
+  description = "The Lambda event type"
+  sensitive   = true
+}
+
+variable "route_key" {
+  type        = string
+  description = "The Lambda event type"
+  sensitive   = true
+}
+
+variable "lambda_function_version" {
+  type        = string
+  description = "The Lambda event type"
+  sensitive   = true
+}
+
+variable "dynamodb_table" {
   type        = string
   description = "The Lambda event type"
   sensitive   = true

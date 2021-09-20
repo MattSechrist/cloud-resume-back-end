@@ -10,7 +10,7 @@ table    = dynamodb.Table(lambda_variables.table)
 def update_visitor_counter():
     response = table.update_item(Key={lambda_variables.hash_key_column: lambda_variables.hash_key_value},
     AttributeUpdates={
-            hash_key_count: {
+            lambda_variables.hash_key_count: {
                 'Value': 1,
                 'Action': 'ADD'
             }
