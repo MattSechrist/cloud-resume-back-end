@@ -4,11 +4,16 @@ resource "aws_dynamodb_table" "create_visitor_table" {
   read_capacity  = 20
   write_capacity = 20
   hash_key       = "website_name"
-
   attribute {
     name = "website_name"
     type = "S"
   }
+
+
+
+
+
+    
 }
 
 resource "aws_dynamodb_table_item" "create_vistor_counter_item" {
@@ -17,7 +22,16 @@ resource "aws_dynamodb_table_item" "create_vistor_counter_item" {
   item       = <<ITEM
 {
     "website_name" : {"S" : "cloud_resume"},
-    "vistor_counter": {"N": "0"}
+    "visitor_counter": {"N": "0"}
 }
 ITEM
+
+# Ignore updates to the counter so Terraform doesn' try to reset the value after every "terraform apply" 
+# Feels a little hacky to me, will research a better solution.
+  lifecycle { 
+  ignore_changes = [item]
 }
+}
+
+
+
