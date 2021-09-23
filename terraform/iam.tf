@@ -16,7 +16,7 @@ resource "aws_iam_policy" "GetUpdateVisitorsPolicy" {
                 "dynamodb:GetItem",
                 "dynamodb:UpdateItem"
             ],
-            "Resource": "arn:aws:dynamodb:${var.my_region}:${var.account_id}:table/${var.dynamodb_table}"
+            "Resource": "arn:aws:dynamodb:${var.my_region}:${var.account_id}:table/${data.aws_ssm_parameter.dynamodb_table.value}"
         }
     ]
 }

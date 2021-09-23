@@ -99,6 +99,7 @@ variable "lambda_function_version" {
 
 variable "dynamodb_table" {
   type        = string
+  default = ""
   description = "The Lambda event type"
   sensitive   = true
 }

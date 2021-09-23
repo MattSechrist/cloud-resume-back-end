@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "create_visitor_table" {
-  name           = "visitor"
+  name           = data.aws_ssm_parameter.dynamodb_table.value
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
@@ -7,13 +7,7 @@ resource "aws_dynamodb_table" "create_visitor_table" {
   attribute {
     name = "website_name"
     type = "S"
-  }
-
-
-
-
-
-    
+  }    
 }
 
 resource "aws_dynamodb_table_item" "create_vistor_counter_item" {
@@ -32,6 +26,7 @@ ITEM
   ignore_changes = [item]
 }
 }
+
 
 
 
