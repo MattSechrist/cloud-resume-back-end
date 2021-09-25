@@ -1,11 +1,12 @@
+#Create Lambda function 
 resource "aws_lambda_function" "lambda_function" {
-  function_name = var.lambda_function_name
+  function_name = data.aws_ssm_parameter.lambda_function_name.value
 
-  s3_bucket = var.lambda_s3_bucket
-  s3_key    = var.lambda_s3_file
+  s3_bucket = data.aws_ssm_parameter.backup_bucket_name.value
+  s3_key    = data.aws_ssm_parameter.lambda_s3_file.value
 
-  handler = var.lambda_handler
-  runtime = var.lambda_runtime
+  handler = data.aws_ssm_parameter.lambda_handler.value
+  runtime = data.aws_ssm_parameter.lambda_runtime.value
 
   role    = aws_iam_role.lambda_role.arn
   publish = true
@@ -13,7 +14,6 @@ resource "aws_lambda_function" "lambda_function" {
 
 # IAM role which dictates what other AWS services the Lambda function
 # may access.
-
 resource "aws_iam_role" "lambda_role" {
   name               = "lambda-role"
   assume_role_policy = <<EOF
@@ -30,18 +30,12 @@ resource "aws_iam_role" "lambda_role" {
       },
       "Action": "sts:AssumeRole"
     }
-    ]
+  ]
 }
 EOF
 }
 
-resource "aws_lambda_alias" "lambda_alias" {
-  name             = "lambda_alias"
-  description      = "a sample description"
-  function_name    = aws_lambda_function.lambda_function.arn
-  function_version = var.lambda_function_version
-}
-
+#Create the HTTP API 
 resource "aws_apigatewayv2_api" "CloudResumeAPI" {
   name          = "CloudResumeAPI"
   protocol_type = "HTTP"
@@ -54,7 +48,7 @@ resource "aws_apigatewayv2_api" "CloudResumeAPI" {
   }
 }
 
-
+#Lambda itegrtion requires the type of AWS_PROXY and a method of POST
 resource "aws_apigatewayv2_integration" "CloudResumeAPI" {
   api_id = aws_apigatewayv2_api.CloudResumeAPI.id
 
@@ -63,16 +57,16 @@ resource "aws_apigatewayv2_integration" "CloudResumeAPI" {
   integration_method = "POST"
 }
 
+#Setting up the API Gatewat route
 resource "aws_apigatewayv2_route" "CloudResumeAPI" {
   api_id = aws_apigatewayv2_api.CloudResumeAPI.id
 
-  route_key = var.route_key
+  route_key = data.aws_ssm_parameter.route_key.value
   target    = "integrations/${aws_apigatewayv2_integration.CloudResumeAPI.id}"
 
 }
 
-
-
+#Attaching the Lambda action to the API Gateway
 resource "aws_lambda_permission" "CloudResumeAPI" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_function.function_name

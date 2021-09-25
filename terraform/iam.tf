@@ -1,5 +1,4 @@
-#create lambda policy to restrict to one table
-#make sure lamda_role attached to lamda function
+#Create lambda policy to restrict to one dynamodb table for only PUTs, GETs, and UPDATEs
 resource "aws_iam_policy" "GetUpdateVisitorsPolicy" {
   name        = "GetUpdateVisitorsPolicy"
   description = "GetUpdateVisitorsPolicy"
@@ -16,16 +15,15 @@ resource "aws_iam_policy" "GetUpdateVisitorsPolicy" {
                 "dynamodb:GetItem",
                 "dynamodb:UpdateItem"
             ],
-            "Resource": "arn:aws:dynamodb:${var.my_region}:${var.account_id}:table/${data.aws_ssm_parameter.dynamodb_table.value}"
+            "Resource": "arn:aws:dynamodb:${data.aws_ssm_parameter.my_region.value}:${data.aws_ssm_parameter.account_id.value}:table/${data.aws_ssm_parameter.dynamodb_table.value}"
         }
     ]
 }
 POL
 }
 
+#Attach Lambda policy to role for Lambda function call
 resource "aws_iam_role_policy_attachment" "lambda-role-attach" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.GetUpdateVisitorsPolicy.arn
 }
-
-

@@ -4,13 +4,13 @@ import lambda_variables
 
 #Get the dynamodb resource and table
 dynamodb = boto3.resource(lambda_variables.database)
-table    = dynamodb.Table(lambda_variables.table)    
+table    = dynamodb.Table(lambda_variables.table['Parameter']['Value'])  
 
 #Initializes and increments the visitor counter value by 1
 def update_visitor_counter():
-    response = table.update_item(Key={lambda_variables.hash_key_column: lambda_variables.hash_key_value},
+    response = table.update_item(Key={lambda_variables.hash_key_column['Parameter']['Value']: lambda_variables.hash_key_value['Parameter']['Value']},
     AttributeUpdates={
-            lambda_variables.hash_key_count: {
+            lambda_variables.hash_key_count['Parameter']['Value']: {
                 'Value': 1,
                 'Action': 'ADD'
             }
@@ -22,7 +22,7 @@ def update_visitor_counter():
 def get_visitor_counter(event, context):
     update_visitor_counter()
     
-    response = table.get_item(Key={lambda_variables.hash_key_column: lambda_variables.hash_key_value})
+    response = table.get_item(Key={lambda_variables.hash_key_column['Parameter']['Value']: lambda_variables.hash_key_value['Parameter']['Value']})
 
     apiResponse = {
         "isBase64Encoded": False,
@@ -32,11 +32,10 @@ def get_visitor_counter(event, context):
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTIONS, POST, GET'
         },
-        "body": response['Item'].get(hash_key_count)
+        "body": response['Item'].get(lambda_variables.hash_key_count['Parameter']['Value'])
     }
     return apiResponse
 
 #Calls   get_visitor_counter() to update&return the visitor counter  
 if __name__ == '__main__':
     get_visitor_counter(event, context)
-    

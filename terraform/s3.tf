@@ -1,6 +1,8 @@
+#Create S3 bucket policy to only allow GetObject to CloudFront using the OAI, along
+#with setting the HTTP header condition
 resource "aws_s3_bucket_policy" "public_bucket_policy" {
 
-  for_each = var.buckets
+  for_each = nonsensitive(jsondecode(data.aws_ssm_parameter.buckets.value))
 
   bucket = each.value
 
@@ -15,7 +17,7 @@ resource "aws_s3_bucket_policy" "public_bucket_policy" {
         Resource  = "arn:aws:s3:::${each.value}/*",
         Condition = {
           StringEquals = {
-            "${var.http_header.key}" : "${var.http_header.value}"
+            "${lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "key")}" : "${lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "value")}"
           }
         }
       },
@@ -23,34 +25,27 @@ resource "aws_s3_bucket_policy" "public_bucket_policy" {
   })
 }
 
+#Create www domain with redirect to non-www domain
 resource "aws_s3_bucket" "create_www_domain_bucket" {
-  bucket = lookup(var.buckets, "www_bucket_name")
+  bucket = lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "www_bucket_name")
   acl    = "public-read"
   lifecycle {
     prevent_destroy = true
   }
 
   website {
-    redirect_all_requests_to = lookup(var.domains, "domain_name")
+    redirect_all_requests_to = lookup(jsondecode(data.aws_ssm_parameter.domains.value), "domain_name")
   }
 }
-resource "aws_s3_object_copy" "website_files" {
 
-  for_each = var.website_files
-
-  bucket = lookup(var.buckets, "bucket_name")
-  key    = each.key
-  source = each.value
-}
-
-# S3 bucket for website.
+#Create domain bucket for the website, including CORS
 resource "aws_s3_bucket" "create_domain_bucket" {
-  bucket = lookup(var.buckets, "bucket_name")
+  bucket = lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "bucket_name")
   acl    = "public-read"
   cors_rule {
     allowed_headers = ["Authorization", "Content-Length"]
     allowed_methods = ["GET", "POST"]
-    allowed_origins = [lookup(var.domains, "domain_name")]
+    allowed_origins = [lookup(jsondecode(data.aws_ssm_parameter.domains.value), "domain_name")]
     max_age_seconds = 300
   }
 

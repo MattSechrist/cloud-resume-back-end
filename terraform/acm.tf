@@ -1,7 +1,7 @@
-# Create SSL Certificate - Used Email over DNS validation as it is a faster setup method, however it is not a Terraform first approach
+# Validate the SSL certificate. DNS took a few hours to validate.
 resource "aws_acm_certificate" "create_ssl_certificate" {
-  domain_name               = lookup(var.buckets, "bucket_name")
-  subject_alternative_names = ["*.${lookup(var.buckets, "bucket_name")}"]
+  domain_name               = lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "bucket_name")
+  subject_alternative_names = ["*.${lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "bucket_name")}"]
   validation_method         = "DNS"
 
   lifecycle {
