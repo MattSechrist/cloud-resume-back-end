@@ -16,7 +16,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       value = lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "value")
     }
   }
-  #lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "key_no_prefix")
+
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"

@@ -17,13 +17,6 @@ resource "aws_dynamodb_table_item" "create_vistor_counter_item" {
   hash_key   = aws_dynamodb_table.create_visitor_table.hash_key
   item       = jsondecode(data.aws_ssm_parameter.table_item.value)
 
-  #  <<ITEM
-  #{
-  #    ${data.aws_ssm_parameter.dynamodb_hash_key.value} : {"S" : ${data.aws_ssm_parameter.dynamodb_hash_key_value.value}},
-  #    ${data.aws_ssm_parameter.dynamodb_table_column.value}: {"N": "0"}
-  #}
-  #ITEM
-
   #Ignore updates to the counter so Terraform doesn't try to reset the value 
   #after every "terraform apply." Feels a little hacky to me, will research a better solution.
   lifecycle {

@@ -8,7 +8,7 @@ variable "backup_bucket_name" {
 variable "s3_website_endpoint" {
   type        = string
   default     = ""
-  description = "The S3 Website Endpoint address"
+  description = "The S3 Website Endpoint URL"
   sensitive   = true
 }
 
@@ -18,6 +18,8 @@ variable "cf_origin" {
   description = "The CloudFront Origin address"
   sensitive   = true
 }
+
+#With an HTTP Header having a secret value I can block direct access to my S3 bucket 
 variable "http_header" {
   type        = map(string)
   default     = {}
@@ -29,92 +31,93 @@ variable "domains" {
   type        = map(string)
   default     = {}
   sensitive   = true
-  description = "A map of the main domain name with and without www prefix"
+  description = "A map of the main domain name with and without a 'www' prefix"
 }
 
+#Buckets variable cannot be marked sensitive in a for_each statement in S3.tf
 variable "buckets" {
   type    = map(string)
   default = {}
-  #sensitive   = true
-  description = "A map of the buckets with and without www prefix"
+  description = "A map of the buckets with and without a 'www' prefix"
 }
 
 variable "lambda_function_name" {
   type        = string
   default     = ""
-  description = "The Lambda function name"
   sensitive   = true
+  description = "The Lambda function name"
+
 }
 variable "lambda_s3_file" {
   type        = string
   default     = ""
-  description = "The Lambda S3 archive file"
   sensitive   = true
+  description = "The Lambda S3 archive file"
 }
 variable "lambda_runtime" {
   type        = string
   default     = ""
-  description = "The Lambda runtime"
   sensitive   = true
+  description = "The Lambda runtime language and version number"
 }
 variable "lambda_handler" {
   type        = string
   default     = ""
-  description = "The Lambda handler"
   sensitive   = true
+  description = "The Lambda function handler"
 }
 variable "lambda_iam_role" {
   type        = string
   default     = ""
-  description = "The Lambda IAM role"
   sensitive   = true
+  description = "The Lambda IAM role"
 }
 
 variable "lambda_event_type" {
   type        = string
   default     = ""
-  description = "The Lambda event type"
   sensitive   = true
+  description = "The Lambda event type"
 }
 
 variable "my_region" {
   type        = string
   default     = ""
-  description = "The Lambda event type"
   sensitive   = true
+  description = "The default AWS region for my environment"
 }
 
 variable "account_id" {
   type        = string
   default     = ""
-  description = "The Lambda event type"
   sensitive   = true
+  description = "The AWS Account ID"
 }
 
 variable "route_key" {
   type        = string
   default     = ""
-  description = "The Lambda event type"
   sensitive   = true
+  description = "The HTTP API route for my Lambda function"
 }
 
 variable "lambda_function_version" {
   type        = string
   default     = ""
-  description = "The Lambda event type"
   sensitive   = true
+  description = "The version number of my Lambda function"
 }
 
 variable "dynamodb_table" {
   type        = string
   default     = ""
-  description = "The Lambda event type"
   sensitive   = true
+  description = "The DynamoDB table name"
 }
 
 variable "table_item" {
   type        = string
   default     = ""
-  description = "The Lambda event type"
   sensitive   = true
+  description = "The column and value information for my visitor counter table"
 }

@@ -36,6 +36,6 @@ def get_visitor_counter(event, context):
     }
     return apiResponse
 
-#Calls   get_visitor_counter() to update&return the visitor counter  
+#Calls get_visitor_counter() function to update and return the visitor counter  
 if __name__ == '__main__':
     get_visitor_counter(event, context)
