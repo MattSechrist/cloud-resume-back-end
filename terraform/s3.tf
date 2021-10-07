@@ -2,7 +2,8 @@
 #with setting the HTTP header condition
 resource "aws_s3_bucket_policy" "public_bucket_policy" {
 
-#you can create a value to pass to for_each with toset([for k,v in local.map : k])
+#To use sensitive variables in a for_each, that must be marked nonsensitive since value
+#must be known 
   for_each = nonsensitive(jsondecode(data.aws_ssm_parameter.buckets.value))
 
   bucket = each.value
