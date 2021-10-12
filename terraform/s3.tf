@@ -2,8 +2,8 @@
 #with setting the HTTP header condition
 resource "aws_s3_bucket_policy" "public_bucket_policy" {
 
-#To use sensitive variables in a for_each, that must be marked nonsensitive since value
-#must be known 
+  #To use sensitive variables in a for_each, that must be marked nonsensitive since value
+  #must be known 
   for_each = nonsensitive(jsondecode(data.aws_ssm_parameter.buckets.value))
 
   bucket = each.value

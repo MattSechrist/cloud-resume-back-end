@@ -36,8 +36,8 @@ variable "domains" {
 
 #Buckets variable cannot be marked sensitive in a for_each statement in S3.tf
 variable "buckets" {
-  type    = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
   description = "A map of the buckets with and without a 'www' prefix"
 }
 
@@ -120,4 +120,11 @@ variable "table_item" {
   default     = ""
   sensitive   = true
   description = "The column and value information for my visitor counter table"
+}
+
+variable "kms_key" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The KMS key used to encrypt Parameter Store variables"
 }

@@ -12,28 +12,6 @@ resource "aws_lambda_function" "lambda_function" {
   publish = true
 }
 
-# IAM role which dictates what other AWS services the Lambda function
-# may access.
-resource "aws_iam_role" "lambda_role" {
-  name               = "lambda-role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-          "lambda.amazonaws.com"
-        ]
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
-}
 
 #Create the HTTP API 
 resource "aws_apigatewayv2_api" "CloudResumeAPI" {

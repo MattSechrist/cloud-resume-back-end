@@ -77,3 +77,7 @@ data "aws_ssm_parameter" "dynamodb_table_column" {
 data "aws_ssm_parameter" "table_item" {
   name = "table_item"
 }
+
+data "aws_ssm_parameter" "kms_key" {
+  name = "kms_key"
+}
