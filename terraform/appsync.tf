@@ -1,6 +1,11 @@
 resource "aws_appsync_graphql_api" "appsync_visitor_counter_api" {
-  authentication_type = "API_KEY"
+  authentication_type = "AWS_IAM"
   name                = "appsync_visitor_counter_api"
+  identity_pool_config {
+      aws_region ="us-east-1"
+      default_action = "ALLOW"
+      identity_pool_id = "us-east-1:4f5c3e08-f0cc-4b84-b1f8-a6ce99510232"
+  }
 
   schema = <<EOF
 type Query {
@@ -17,7 +22,7 @@ schema {
 EOF
 }
 
-resource "aws_appsync_api_key" "appsync_visitor_counter_api_key" {
+resource "aws_appsync_api_key" "visitor_counter_api_key" {
   api_id = aws_appsync_graphql_api.appsync_visitor_counter_api.id
 }
 
