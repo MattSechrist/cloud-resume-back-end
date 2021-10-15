@@ -1,4 +1,5 @@
-#Create the dynamodb table, must include the hash key as the Primary key value
+# Create the dynamodb table, must include the hash key as the Primary key value
+# F
 resource "aws_dynamodb_table" "create_visitor_table" {
   name           = data.aws_ssm_parameter.dynamodb_table.value
   billing_mode   = "PROVISIONED"

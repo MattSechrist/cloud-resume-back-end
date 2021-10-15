@@ -1,4 +1,5 @@
-#Switched from a REST API for the Visitor Counter over to using AppSync, keeping code for historical purposes
+# The Terraform files is depracated as I switched from a GET request REST API for the Visitor Counter , over to using a POST request REST API in front of an AppSync/GraphQL endpoint.
+# Keeping code for historical purposes.
 #
 #
 #Create mandatory OAI resource
