@@ -48,9 +48,6 @@ data "aws_ssm_parameter" "lambda_iam_role" {
 data "aws_ssm_parameter" "lambda_event_type" {
   name = "lambda_event_type"
 }
-data "aws_ssm_parameter" "route_key" {
-  name = "route_key"
-}
 data "aws_ssm_parameter" "lambda_function_version" {
   name = "lambda_function_version"
 }

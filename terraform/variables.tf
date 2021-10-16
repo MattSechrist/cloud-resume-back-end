@@ -94,13 +94,6 @@ variable "account_id" {
   description = "The AWS Account ID"
 }
 
-variable "route_key" {
-  type        = string
-  default     = ""
-  sensitive   = true
-  description = "The HTTP API route for my Lambda function"
-}
-
 variable "lambda_function_version" {
   type        = string
   default     = ""

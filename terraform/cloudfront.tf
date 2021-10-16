@@ -59,4 +59,12 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
+
+  # For all Forbidden messages, send a 404 response and get the error.html returned to user
+  custom_error_response {
+    error_caching_min_ttl = "10"
+    error_code            = "403"
+    response_code         = "404"
+    response_page_path    = "/error.html"
+  }
 }
