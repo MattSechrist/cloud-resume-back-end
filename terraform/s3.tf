@@ -1,13 +1,16 @@
-#Create S3 bucket policy to only allow GetObject to CloudFront using the OAI, along
-#with setting the HTTP header condition
+# This Terraform file creates the S3 bucket policy to only allow GetObject to CloudFront using the OAI, along
+# with setting the HTTP header condition
+
+# Creates the S3 bucket policy
 resource "aws_s3_bucket_policy" "public_bucket_policy" {
 
-  #To use sensitive variables in a for_each, that must be marked nonsensitive since value
-  #must be known 
+  # To use sensitive variables in a for_each, that must be marked nonsensitive since value
+  # must be known 
   for_each = nonsensitive(jsondecode(data.aws_ssm_parameter.buckets.value))
 
   bucket = each.value
 
+  # This policy inclues the custom header to stop direct S# bucket access from a browser without it
   policy = jsonencode({
     Version = "2012-10-17"
     Id      = "S3_Static_Website_Bucket_Policy"
@@ -27,7 +30,8 @@ resource "aws_s3_bucket_policy" "public_bucket_policy" {
   })
 }
 
-#Create www domain with redirect to non-www domain
+# Creates a second bucket for the www domain name with redirect to the primary bucket with the non-www domain name
+# This bucket is empty and only does the redirection
 resource "aws_s3_bucket" "create_www_domain_bucket" {
   bucket = lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "www_bucket_name")
   acl    = "public-read"
@@ -40,7 +44,7 @@ resource "aws_s3_bucket" "create_www_domain_bucket" {
   }
 }
 
-#Create domain bucket for the website, including CORS
+# Creates the domain bucket for the website, including CORS
 resource "aws_s3_bucket" "create_domain_bucket" {
   bucket = lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "bucket_name")
   acl    = "public-read"
@@ -53,5 +57,6 @@ resource "aws_s3_bucket" "create_domain_bucket" {
 
   website {
     index_document = "index.html"
+    error_document = "error.html"
   }
 }

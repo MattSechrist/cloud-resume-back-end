@@ -1,9 +1,11 @@
-#Create the hosted zone
+# This Terraform file creates the Route 53 Hosted Zone and all DNS records
+
+# Creates the hosted zone
 resource "aws_route53_zone" "route53_hosted_zone" {
   name = lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "bucket_name")
 }
 
-#Create mandatory NS records with four given Name server records
+# Create mandatory NS records with four given Name server records
 resource "aws_route53_record" "NS_record" {
   allow_overwrite = true
   name            = lookup(jsondecode(data.aws_ssm_parameter.buckets.value), "bucket_name")

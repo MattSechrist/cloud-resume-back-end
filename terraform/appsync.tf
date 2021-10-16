@@ -37,7 +37,7 @@ resource "aws_appsync_datasource" "appsync_visitor_counter_datasource" {
   }
 }
 
-# Resource that utilizes standard output for the Resolver's request and response templates 
+# Utilizes standard template for the Resolver's request and response templates 
 resource "aws_appsync_resolver" "aws_appsync_visitor_counter_resolver" {
   api_id      = aws_appsync_graphql_api.appsync_visitor_counter_api.id
   field       = "visitor_counter"

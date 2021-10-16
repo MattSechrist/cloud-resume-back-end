@@ -1,8 +1,10 @@
-#Create mandatory OAI resource
+# This Terraform file creates all resources needed for the CloudFront distribution
+
+# Creates mandatory OAI resource
 resource "aws_cloudfront_origin_access_identity" "create_oai" {
 }
 
-#Create the CloudFront distribution with OAI,  HTTP header, and SSL certificate
+# Creates the CloudFront distribution with OAI, HTTP header, and SSL certificate
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = data.aws_ssm_parameter.cf_origin.value
@@ -11,6 +13,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.create_oai.cloudfront_access_identity_path
     }
+
+    # Uses a custom header to block direct S3 bucket access
     custom_header {
       name  = lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "key_no_prefix")
       value = lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "value")

@@ -1,4 +1,4 @@
-#This Terraform file sets all the Terraform variables to their associated values pulled from the AWS Parameter Store 
+# This Terraform file sets all the Terraform variables to their associated values pulled from the AWS Parameter Store 
 data "aws_ssm_parameter" "dynamodb_table" {
   name = "dynamodb_table"
 }

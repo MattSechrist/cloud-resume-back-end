@@ -1,5 +1,6 @@
-# IAM role which dictates what other AWS services the Lambda function
-# may access.
+# This Terraform file creates the IAM policies and roles
+
+# Creates the IAM role which dictates what other AWS services the Lambda function may access
 resource "aws_iam_role" "lambda_role" {
   name               = "lambda-role"
   assume_role_policy = <<EOF
@@ -32,7 +33,7 @@ EOF
 }
 
 
-#Create lambda policy to restrict to one dynamodb table for only PUTs, GETs, and UPDATEs
+# Creates the Lambda policy to restrict to one DynamoDB table for only PUTs, GETs, and UPDATEs
 resource "aws_iam_policy" "GetUpdateVisitorsPolicy" {
   name        = "GetUpdateVisitorsPolicy"
   description = "GetUpdateVisitorsPolicy"
@@ -76,7 +77,7 @@ resource "aws_iam_policy" "GetUpdateVisitorsPolicy" {
 POL
 }
 
-#Attach Lambda policy to role for Lambda function call
+# Attaches the Lambda policy to the role for Lambda function call
 resource "aws_iam_role_policy_attachment" "lambda-role-attach" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.GetUpdateVisitorsPolicy.arn

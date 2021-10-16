@@ -1,4 +1,4 @@
-#The Terraform file lays out the resources needed to create the SSL certificate
+# This Terraform file lays out the resources needed to create the SSL certificate and validation
 
 # Validate the SSL certificate. DNS took a few hours to validate.
 resource "aws_acm_certificate" "create_ssl_certificate" {
