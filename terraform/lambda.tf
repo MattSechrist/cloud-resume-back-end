@@ -7,9 +7,9 @@ resource "aws_lambda_function" "lambda_function" {
   s3_bucket = data.aws_ssm_parameter.backup_bucket_name.value
   s3_key    = data.aws_ssm_parameter.lambda_s3_file.value
 
-  handler   = data.aws_ssm_parameter.lambda_handler.value
-  runtime   = data.aws_ssm_parameter.lambda_runtime.value
-  
-  role      = aws_iam_role.lambda_role.arn
-  publish   = true
+  handler = data.aws_ssm_parameter.lambda_handler.value
+  runtime = data.aws_ssm_parameter.lambda_runtime.value
+
+  role    = aws_iam_role.lambda_role.arn
+  publish = true
 }

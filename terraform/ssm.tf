@@ -78,3 +78,31 @@ data "aws_ssm_parameter" "table_item" {
 data "aws_ssm_parameter" "kms_key" {
   name = "kms_key"
 }
+
+data "aws_ssm_parameter" "custom_header" {
+  name = "custom_header"
+}
+
+data "aws_ssm_parameter" "custom_value" {
+  name = "custom_value"
+}
+
+data "aws_ssm_parameter" "path_part" {
+  name = "path_part"
+}
+
+data "aws_ssm_parameter" "appsync_stage_name" {
+  name = "appsync_stage_name"
+}
+
+data "aws_ssm_parameter" "appsync_role_name" {
+  name = "appsync_role_name"
+}
+
+data "aws_ssm_parameter" "appsync_schema" {
+  name = "appsync_schema"
+}
+
+data "aws_ssm_parameter" "api_gateway_domain_name" {
+  name = "api_gateway_domain_name"
+}

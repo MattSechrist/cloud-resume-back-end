@@ -121,3 +121,52 @@ variable "kms_key" {
   sensitive   = true
   description = "The KMS key used to encrypt Parameter Store variables"
 }
+
+variable "custom_header" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The custom header that API Gateway integration request passes to AppSync"
+}
+
+variable "custom_value" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The custom value that API Gateway  integration request passes to AppSync"
+}
+
+variable "path_part" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The API Gateway path part to access to the visitor counter API"
+}
+
+variable "appsync_stage_name" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The AppSync stage name"
+}
+
+variable "appsync_role_name" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The AppSync role name"
+}
+
+variable "appsync_schema" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The AppSync schema"
+}
+
+variable "api_gateway_domain_name" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The domain name assicated with API Gateway"
+}

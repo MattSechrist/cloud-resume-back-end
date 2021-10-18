@@ -5,19 +5,7 @@ resource "aws_appsync_graphql_api" "appsync_visitor_counter_api" {
   authentication_type = "API_KEY"
   name                = "appsync_visitor_counter_api"
 
-  schema = <<EOF
-    type Query {
-	    visitor_counter: body
-    }
-
-    type body {
-	    body: String!
-    }
-
-    schema {
-	    query: Query
-    }
-  EOF
+  schema = data.aws_ssm_parameter.appsync_schema.value
 }
 
 # Resource for the API key
@@ -36,6 +24,11 @@ resource "aws_appsync_datasource" "appsync_visitor_counter_datasource" {
     function_arn = "arn:aws:lambda:${data.aws_ssm_parameter.my_region.value}:${data.aws_ssm_parameter.account_id.value}:function:${data.aws_ssm_parameter.lambda_function_name.value}"
   }
 }
+
+output "uri" {
+  value = split("https://",split(".",lookup(aws_appsync_graphql_api.appsync_visitor_counter_api.uris,"GRAPHQL"))[0])[1]
+}
+
 
 # Utilizes standard template for the Resolver's request and response templates 
 resource "aws_appsync_resolver" "aws_appsync_visitor_counter_resolver" {
