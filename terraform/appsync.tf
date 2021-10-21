@@ -26,7 +26,7 @@ resource "aws_appsync_datasource" "appsync_visitor_counter_datasource" {
 }
 
 output "uri" {
-  value = split("https://",split(".",lookup(aws_appsync_graphql_api.appsync_visitor_counter_api.uris,"GRAPHQL"))[0])[1]
+  value = split("https://", split(".", lookup(aws_appsync_graphql_api.appsync_visitor_counter_api.uris, "GRAPHQL"))[0])[1]
 }
 
 
