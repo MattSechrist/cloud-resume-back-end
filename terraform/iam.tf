@@ -79,17 +79,17 @@ POL
 
 # Attaches the Lambda policy to the role for Lambda function call
 resource "aws_iam_role_policy_attachment" "lambda-role-attach" {
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = aws_iam_policy.GetUpdateVisitorsPolicy.arn
+  role        = aws_iam_role.lambda_role.name
+  policy_arn  = aws_iam_policy.GetUpdateVisitorsPolicy.arn
 }
 
 # Create the policy for access to GraphQL API resource
 resource "aws_iam_role_policy" "visitor_counter_role_policy" {
-  name = "visitor_counter_role_policy"
-  role = aws_iam_role.visitor_counter_role.id
+  name        = "visitor_counter_role_policy"
+  role        = aws_iam_role.visitor_counter_role.id
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = [
       {
         "Action" : [
@@ -110,12 +110,12 @@ resource "aws_iam_role" "visitor_counter_role" {
   name = data.aws_ssm_parameter.appsync_role_name.value
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
+    Version       = "2012-10-17"
+    Statement     = [
+      {   
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Sid       = ""
         Principal = {
           Service = "apigateway.amazonaws.com"
         }

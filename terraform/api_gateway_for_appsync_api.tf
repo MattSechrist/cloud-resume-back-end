@@ -130,19 +130,19 @@ resource "aws_api_gateway_deployment" "visitor_counter_deployment" {
   }
 
   lifecycle {
-    create_before_destroy       = true
+    create_before_destroy      = true
   }
 }
 
 resource "aws_api_gateway_stage" "visitor_counter_stage" {
-  deployment_id                 = aws_api_gateway_deployment.visitor_counter_deployment.id
-  rest_api_id                   = aws_api_gateway_rest_api.visitor_counter_api.id
-  stage_name                    = data.aws_ssm_parameter.appsync_stage_name.value
+  deployment_id                = aws_api_gateway_deployment.visitor_counter_deployment.id
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
+  stage_name                   = data.aws_ssm_parameter.appsync_stage_name.value
 }
 
 resource "aws_api_gateway_domain_name" "visitor_counter_domain_name" {
-  regional_certificate_arn      = aws_acm_certificate_validation.create_certificate_validation.certificate_arn
-  domain_name                   = data.aws_ssm_parameter.api_gateway_domain_name.value
+  regional_certificate_arn     = aws_acm_certificate_validation.create_certificate_validation.certificate_arn
+  domain_name                  = data.aws_ssm_parameter.api_gateway_domain_name.value
 
   security_policy = "TLS_1_2"
 
@@ -152,19 +152,19 @@ resource "aws_api_gateway_domain_name" "visitor_counter_domain_name" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "visitor_counter_base_path_mapping" {
-  api_id                        = aws_api_gateway_rest_api.visitor_counter_api.id
-  stage_name                    = aws_api_gateway_stage.visitor_counter_stage.stage_name
-  domain_name                   = aws_api_gateway_domain_name.visitor_counter_domain_name.domain_name
+  api_id                       = aws_api_gateway_rest_api.visitor_counter_api.id
+  stage_name                   = aws_api_gateway_stage.visitor_counter_stage.stage_name
+  domain_name                  = aws_api_gateway_domain_name.visitor_counter_domain_name.domain_name
 }
 
 resource "aws_api_gateway_method_response" "visitor_counter_POST_method_response" {
-  rest_api_id                   = aws_api_gateway_rest_api.visitor_counter_api.id
-  resource_id                   = aws_api_gateway_resource.visitor_counter_gateway_resource.id
-  http_method                   = aws_api_gateway_method.visitor_counter_POST_method.http_method
-  status_code                   = "200"
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  http_method                  = aws_api_gateway_method.visitor_counter_POST_method.http_method
+  status_code                  = "200"
 
   response_models = {
-    "application/json"          = "Empty"
+    "application/json"         = "Empty"
   }
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = true
