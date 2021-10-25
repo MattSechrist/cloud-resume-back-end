@@ -25,11 +25,6 @@ resource "aws_appsync_datasource" "appsync_visitor_counter_datasource" {
   }
 }
 
-output "uri" {
-  value = split("https://", split(".", lookup(aws_appsync_graphql_api.appsync_visitor_counter_api.uris, "GRAPHQL"))[0])[1]
-}
-
-
 # Utilizes standard template for the Resolver's request and response templates 
 resource "aws_appsync_resolver" "aws_appsync_visitor_counter_resolver" {
   api_id      = aws_appsync_graphql_api.appsync_visitor_counter_api.id

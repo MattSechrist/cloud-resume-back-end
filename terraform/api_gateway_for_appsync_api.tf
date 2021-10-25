@@ -1,151 +1,148 @@
-resource "aws_api_gateway_rest_api" "example" {
-  name = "visitor_counter_api"
+# This Terraform file creates the resources needed for visitor counter REST API. This API Gateway resource 
+# sits in front of the AppSync/GraphQL API endpoint.
+
+resource "aws_api_gateway_rest_api" "visitor_counter_api" {
+  name                         = "visitor_counter_api"
 
   disable_execute_api_endpoint = true
 
   endpoint_configuration {
-    types = ["EDGE"]
+    types                      = ["EDGE"]
   }
 }
 
-resource "aws_api_gateway_resource" "example" {
-  parent_id   = aws_api_gateway_rest_api.example.root_resource_id
-  path_part   = data.aws_ssm_parameter.path_part.value
-  rest_api_id = aws_api_gateway_rest_api.example.id
+resource "aws_api_gateway_resource" "visitor_counter_gateway_resource" {
+  parent_id                    = aws_api_gateway_rest_api.visitor_counter_api.root_resource_id
+  path_part                    = data.aws_ssm_parameter.path_part.value
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
 }
 
-resource "aws_api_gateway_method" "example" {
-  authorization = "NONE"
-  http_method   = "POST"
-  resource_id   = aws_api_gateway_resource.example.id
-  rest_api_id   = aws_api_gateway_rest_api.example.id
+resource "aws_api_gateway_method" "visitor_counter_POST_method" {
+  authorization                = "NONE"
+  http_method                  = "POST"
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
 }
 
-resource "aws_api_gateway_method" "options" {
-  authorization = "NONE"
-  http_method   = "OPTIONS"
-  resource_id   = aws_api_gateway_resource.example.id
-  rest_api_id   = aws_api_gateway_rest_api.example.id
+resource "aws_api_gateway_method" "visitor_counter_OPTIONS_method" {
+  authorization                = "NONE"
+  http_method                  = "OPTIONS"
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
 }
 
-resource "aws_api_gateway_method_response" "options_200" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
-  resource_id = aws_api_gateway_resource.example.id
-  http_method = aws_api_gateway_method.options.http_method
-  status_code = "200"
-  response_models = {
-
-    "application/json" = "Empty"
-  }
-  response_parameters = {
+resource "aws_api_gateway_method_response" "visitor_counter_OPTIONS_method_response" {
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  http_method                  = aws_api_gateway_method.visitor_counter_OPTIONS_method.http_method
+  status_code                  = "200"
+  response_models              = {
+     
+    "application/json"         = "Empty"
+  }     
+  response_parameters          = {
     "method.response.header.Access-Control-Allow-Headers" = true,
     "method.response.header.Access-Control-Allow-Methods" = true,
     "method.response.header.Access-Control-Allow-Origin"  = true
   }
-  depends_on = [aws_api_gateway_method.options]
+  depends_on                   = [aws_api_gateway_method.visitor_counter_OPTIONS_method]
 }
 
-resource "aws_api_gateway_integration" "options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
-  resource_id = aws_api_gateway_resource.example.id
-  http_method = aws_api_gateway_method.options.http_method
-  type        = "MOCK"
-  depends_on  = [aws_api_gateway_method.options]
-
-  #passthrough_behavior = "WHEN_NO_MATCH"
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 200
+resource "aws_api_gateway_integration" "visitor_counter_OPTIONS_method_integration" {
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  http_method                  = aws_api_gateway_method.visitor_counter_OPTIONS_method.http_method
+  type                         = "MOCK"
+  depends_on                   = [aws_api_gateway_method.visitor_counter_OPTIONS_method]
+       
+  passthrough_behavior         = "WHEN_NO_TEMPLATES"
+     
+  request_templates            = {
+    "application/json"         = jsonencode({
+      statusCode               = 200
     })
   }
 }
 
-resource "aws_api_gateway_integration_response" "options_integration_response" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
-  resource_id = aws_api_gateway_resource.example.id
-  http_method = aws_api_gateway_method.options.http_method
-  status_code = aws_api_gateway_method_response.options_200.status_code
-
-  response_parameters = {
+resource "aws_api_gateway_integration_response" "visitor_counter_OPTIONS_method_integration_response" {
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  http_method                  = aws_api_gateway_method.visitor_counter_OPTIONS_method.http_method
+  status_code                  = aws_api_gateway_method_response.visitor_counter_OPTIONS_method_response.status_code
+     
+  response_parameters          = {
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,POST'",
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'",
+    "method.response.header.Access-Control-Allow-Origin"  = data.aws_ssm_parameter.allowed_origin.value,
   }
 
-  depends_on = [aws_api_gateway_method_response.options_200]
-  response_templates = {
-    "application/json" = ""
+  depends_on = [aws_api_gateway_method_response.visitor_counter_OPTIONS_method_response]
+  response_templates           = {
+    "application/json"         = ""
   }
 }
 
-resource "aws_api_gateway_integration_response" "integration_response" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
-  resource_id = aws_api_gateway_resource.example.id
-  http_method = aws_api_gateway_method.example.http_method
-  status_code = aws_api_gateway_method_response.response_200.status_code
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Origin" = "'*'"
+resource "aws_api_gateway_integration_response" "visitor_counter_POST_method_integration_response" {
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  http_method                  = aws_api_gateway_method.visitor_counter_POST_method.http_method
+  status_code                  = aws_api_gateway_method_response.visitor_counter_POST_method_response.status_code
+     
+  response_parameters          = {
+    "method.response.header.Access-Control-Allow-Origin" = data.aws_ssm_parameter.allowed_origin.value
   }
 
-  depends_on = [aws_api_gateway_method_response.response_200]
-
-  response_templates = {
-    "application/json" = ""
+  depends_on                   = [aws_api_gateway_method_response.visitor_counter_POST_method_response]
+        
+  response_templates           = {
+    "application/json"         = ""
   }
-
 }
 
-resource "aws_api_gateway_integration" "example" {
-  http_method             = aws_api_gateway_method.example.http_method
-  resource_id             = aws_api_gateway_resource.example.id
-  rest_api_id             = aws_api_gateway_rest_api.example.id
-  type                    = "AWS"
-  integration_http_method = "POST"
+resource "aws_api_gateway_integration" "visitor_counter_POST_method_integration" {
+  http_method                  = aws_api_gateway_method.visitor_counter_POST_method.http_method
+  resource_id                  = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
+  type                         = "AWS"
+  integration_http_method      = "POST"
 
-  uri = "arn:aws:apigateway:${data.aws_ssm_parameter.my_region.value}:${split("https://", split(".", lookup(aws_appsync_graphql_api.appsync_visitor_counter_api.uris, "GRAPHQL"))[0])[1]}.appsync-api:path/graphql"
+  # Seems hacky, but could not figure out another way to access the 'AWS Subdomain' underneath the AppSync Data Plane setting
+  uri                          = "arn:aws:apigateway:${data.aws_ssm_parameter.my_region.value}:${split("https://", split(".", lookup(aws_appsync_graphql_api.appsync_visitor_counter_api.uris, "GRAPHQL"))[0])[1]}.appsync-api:path/graphql"
 
-  credentials = "arn:aws:iam::${data.aws_ssm_parameter.account_id.value}:role/${data.aws_ssm_parameter.appsync_role_name.value}"
+  credentials                  = "arn:aws:iam::${data.aws_ssm_parameter.account_id.value}:role/${data.aws_ssm_parameter.appsync_role_name.value}"
 
   request_parameters = {
     (data.aws_ssm_parameter.custom_header.value) = data.aws_ssm_parameter.custom_value.value
   }
 
-  passthrough_behavior = "WHEN_NO_MATCH"
-  #request_templates = {
-  #  "application/json" = "{ 'statusCode': 200 }"
-  #}
+  passthrough_behavior         = "WHEN_NO_TEMPLATES"
 }
 
-output "zcx" {
-  value = aws_appsync_graphql_api.appsync_visitor_counter_api.id
-}
-
-resource "aws_api_gateway_deployment" "example" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
+resource "aws_api_gateway_deployment" "visitor_counter_deployment" {
+  rest_api_id                  = aws_api_gateway_rest_api.visitor_counter_api.id
 
   triggers = {
-    redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.example.id,
-      aws_api_gateway_method.example.id,
-      aws_api_gateway_integration.example.id,
+    redeployment               = sha1(jsonencode([
+      aws_api_gateway_resource.visitor_counter_gateway_resource.id,
+      aws_api_gateway_method.visitor_counter_POST_method.id,
+      aws_api_gateway_integration.visitor_counter_POST_method_integration.id,
     ]))
   }
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy       = true
   }
 }
 
-resource "aws_api_gateway_stage" "example" {
-  deployment_id = aws_api_gateway_deployment.example.id
-  rest_api_id   = aws_api_gateway_rest_api.example.id
-  stage_name    = data.aws_ssm_parameter.appsync_stage_name.value
+resource "aws_api_gateway_stage" "visitor_counter_stage" {
+  deployment_id                 = aws_api_gateway_deployment.visitor_counter_deployment.id
+  rest_api_id                   = aws_api_gateway_rest_api.visitor_counter_api.id
+  stage_name                    = data.aws_ssm_parameter.appsync_stage_name.value
 }
 
-resource "aws_api_gateway_domain_name" "example" {
-  regional_certificate_arn = aws_acm_certificate_validation.create_certificate_validation.certificate_arn
-  domain_name              = data.aws_ssm_parameter.api_gateway_domain_name.value
+resource "aws_api_gateway_domain_name" "visitor_counter_domain_name" {
+  regional_certificate_arn      = aws_acm_certificate_validation.create_certificate_validation.certificate_arn
+  domain_name                   = data.aws_ssm_parameter.api_gateway_domain_name.value
 
   security_policy = "TLS_1_2"
 
@@ -154,83 +151,22 @@ resource "aws_api_gateway_domain_name" "example" {
   }
 }
 
-resource "aws_api_gateway_base_path_mapping" "example" {
-  api_id      = aws_api_gateway_rest_api.example.id
-  stage_name  = aws_api_gateway_stage.example.stage_name
-  domain_name = aws_api_gateway_domain_name.example.domain_name
+resource "aws_api_gateway_base_path_mapping" "visitor_counter_base_path_mapping" {
+  api_id                        = aws_api_gateway_rest_api.visitor_counter_api.id
+  stage_name                    = aws_api_gateway_stage.visitor_counter_stage.stage_name
+  domain_name                   = aws_api_gateway_domain_name.visitor_counter_domain_name.domain_name
 }
 
-resource "aws_api_gateway_method_response" "response_200" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
-  resource_id = aws_api_gateway_resource.example.id
-  http_method = aws_api_gateway_method.example.http_method
-  status_code = "200"
+resource "aws_api_gateway_method_response" "visitor_counter_POST_method_response" {
+  rest_api_id                   = aws_api_gateway_rest_api.visitor_counter_api.id
+  resource_id                   = aws_api_gateway_resource.visitor_counter_gateway_resource.id
+  http_method                   = aws_api_gateway_method.visitor_counter_POST_method.http_method
+  status_code                   = "200"
 
   response_models = {
-    "application/json" = "Empty"
+    "application/json"          = "Empty"
   }
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = true
   }
 }
-
-#Create  A record for API Gateway domain record
-resource "aws_route53_record" "api_gateway_domain_name_A_record" {
-  zone_id = aws_route53_zone.route53_hosted_zone.zone_id
-  name    = data.aws_ssm_parameter.api_gateway_domain_name.value
-
-  type = "A"
-
-  alias {
-    name                   = aws_api_gateway_domain_name.example.regional_domain_name
-    zone_id                = aws_api_gateway_domain_name.example.regional_zone_id
-    evaluate_target_health = false
-  }
-}
-
-
-resource "aws_iam_role_policy" "appsync_policy" {
-  name = "appsync_policy"
-  role = aws_iam_role.appsync_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        "Action" : [
-          "appsync:GraphQL"
-        ],
-        "Resource" : [
-          "arn:aws:appsync:${data.aws_ssm_parameter.my_region.value}:${data.aws_ssm_parameter.account_id.value}:apis/${aws_appsync_graphql_api.appsync_visitor_counter_api.id}/*"
-        ],
-        "Effect" : "Allow"
-      }
-    ]
-    }
-  )
-}
-
-resource "aws_iam_role" "appsync_role" {
-  name = data.aws_ssm_parameter.appsync_role_name.value
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "apigateway.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-# change to disable default execution
-# Enable CORS correctly (and need to create OPTIONS route) - integration request MOCK, method response 200 and empty, integration response output passthrough YES
-# figure out AWS SubDomain
-# Enable CloudWatch to AppSync
-
-# api mapping needs path part, need to change on Empty

@@ -106,3 +106,21 @@ data "aws_ssm_parameter" "appsync_schema" {
 data "aws_ssm_parameter" "api_gateway_domain_name" {
   name = "api_gateway_domain_name"
 }
+
+data "aws_ssm_parameter" "security_headers_function" {
+  name = "security_headers_function"
+}
+data "aws_ssm_parameter" "security_headers_function_handler" {
+  name = "security_headers_function_handler"
+}
+data "aws_ssm_parameter" "security_headers_function_runtime" {
+  name = "security_headers_function_runtime"
+}
+
+data "aws_ssm_parameter" "security_headers_function_name" {
+  name = "security_headers_function_name"
+}
+
+data "aws_ssm_parameter" "allowed_origin" {
+  name = "allowed_origin"
+}

@@ -133,7 +133,7 @@ variable "custom_value" {
   type        = string
   default     = ""
   sensitive   = true
-  description = "The custom value that API Gateway  integration request passes to AppSync"
+  description = "The custom value that API Gateway integration request passes to AppSync"
 }
 
 variable "path_part" {
@@ -147,26 +147,60 @@ variable "appsync_stage_name" {
   type        = string
   default     = ""
   sensitive   = true
-  description = "The AppSync stage name"
+  description = "The AppSync stage name for the visitor counter API"
 }
 
 variable "appsync_role_name" {
   type        = string
   default     = ""
   sensitive   = true
-  description = "The AppSync role name"
+  description = "The AppSync role name for the visitor counter API"
 }
 
 variable "appsync_schema" {
   type        = string
   default     = ""
   sensitive   = true
-  description = "The AppSync schema"
+  description = "The AppSync schema for the visitor counter API"
 }
 
 variable "api_gateway_domain_name" {
   type        = string
   default     = ""
   sensitive   = true
-  description = "The domain name assicated with API Gateway"
+  description = "The custom domain name associated with the visitor counter API"
+}
+
+variable "security_headers_function" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The S3 file name for the Lambda function for the security headers function"
+}
+variable "security_headers_function_runtime" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The Lambda runtime name for the security headers function"
+}
+
+variable "security_headers_function_handler" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The Lambda function handler name for the security headers function"
+}
+
+variable "security_headers_function_name" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The Lambda function name for the security headers function"
+}
+
+variable "allowed_origin" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "The accepted origin for CORS for the visitor counter API"
 }

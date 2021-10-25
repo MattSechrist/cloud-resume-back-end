@@ -46,12 +46,21 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
 
+    # This adds the security headers to the origin response
+    lambda_function_association {
+      event_type = "origin-response"
+
+      lambda_arn = aws_lambda_function.SecurityHeaders_lambda_function.qualified_arn
+    }
+
   }
 
   restrictions {
     geo_restriction {
       restriction_type = "none"
     }
+
+
   }
 
   viewer_certificate {
