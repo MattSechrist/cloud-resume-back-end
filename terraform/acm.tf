@@ -7,11 +7,11 @@ resource "aws_acm_certificate" "create_ssl_certificate" {
   validation_method         = "DNS"
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy   = true
   }
 }
 
 # This resource does not map to a direct AWS resource but used to validate the SSL certificate creation workflow
 resource "aws_acm_certificate_validation" "create_certificate_validation" {
-  certificate_arn = aws_acm_certificate.create_ssl_certificate.arn
+  certificate_arn           = aws_acm_certificate.create_ssl_certificate.arn
 }

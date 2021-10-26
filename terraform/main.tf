@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
+      source     = "hashicorp/aws"
+      version    = "~> 3.0"
     }
   }
   # Using Terraform Cloud to save Workflow states 
@@ -10,11 +10,11 @@ terraform {
     organization = "matthewsechrist"
 
     workspaces {
-      name = "cloud_resume_back_end"
+      name       = "cloud_resume_back_end"
     }
   }
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region         = "us-east-1"
 }
