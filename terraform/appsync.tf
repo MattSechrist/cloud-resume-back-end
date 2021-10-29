@@ -32,7 +32,7 @@ resource "aws_appsync_resolver" "aws_appsync_visitor_counter_resolver" {
   type                = "Query"
   data_source         = aws_appsync_datasource.appsync_visitor_counter_datasource.name
 
-  request_template = <<EOF
+  request_template    = <<EOF
   {
     "version" : "2017-02-28",
     "operation": "Invoke",
@@ -40,7 +40,7 @@ resource "aws_appsync_resolver" "aws_appsync_visitor_counter_resolver" {
   }
   EOF
 
-  response_template = <<EOF
+  response_template    = <<EOF
     $util.toJson($context.result)
   EOF
 }

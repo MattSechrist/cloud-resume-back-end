@@ -6,21 +6,21 @@ resource "aws_s3_bucket_policy" "public_bucket_policy" {
 
   # To use sensitive variables in a for_each, that must be marked nonsensitive since value
   # must be known 
-  for_each         = nonsensitive(jsondecode(data.aws_ssm_parameter.buckets.value))
+  for_each          = nonsensitive(jsondecode(data.aws_ssm_parameter.buckets.value))
  
-  bucket           = each.value
+  bucket            = each.value
 
   # This policy inclues the custom header to stop direct S# bucket access from a browser without it
-  policy           = jsonencode({
-    Version        = "2012-10-17"
-    Id             = "S3_Static_Website_Bucket_Policy"
-    Statement      = [
+  policy            = jsonencode({
+    Version         = "2012-10-17"
+    Id              = "S3_Static_Website_Bucket_Policy"
+    Statement       = [
       { 
-        Effect     = "Allow"
-        Principal  = { "AWS" : "${aws_cloudfront_origin_access_identity.create_oai.iam_arn}" },
-        Action     = "s3:GetObject",
-        Resource   = "arn:aws:s3:::${each.value}/*",
-        Condition  = {
+        Effect      = "Allow"
+        Principal   = { "AWS" : "${aws_cloudfront_origin_access_identity.create_oai.iam_arn}" },
+        Action      = "s3:GetObject",
+        Resource    = "arn:aws:s3:::${each.value}/*",
+        Condition   = {
           StringEquals = {
             "${lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "key")}" : "${lookup(jsondecode(data.aws_ssm_parameter.http_header.value), "value")}"
           }
