@@ -15,7 +15,7 @@ exports.handler = (event, context, callback) => {
 
 headers['content-security-policy'] = [{
     key:   'Content-Security-Policy', 
-    value: "default-src 'none'; base-uri 'none'; form-action 'none'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://matthewsechrist.cloud; script-src 'strict-dynamic' https://matthewsechrist.cloud; style-src 'self' https://fonts.googleapis.com *.fontawesome.com; frame-src 'self'; frame-ancestors 'none'; connect-src 'self' https://api.matthewsechrist.cloud/graphql *.fontawesome.com;;"
+    value: "default-src 'none'; base-uri 'none'; form-action 'none'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://matthewsechrist.cloud; script-src 'strict-dynamic' https://matthewsechrist.cloud  https://www.googletagmanager.com/gtag/js?id=G-5HQHYSH17Q https://matthewsechrist.cloud/assets/js/api.js; style-src 'self' https://fonts.googleapis.com *.fontawesome.com; frame-src 'self'; frame-ancestors 'none'; connect-src 'self' https://api.matthewsechrist.cloud/graphql *.fontawesome.com;;"
 }];
 
 headers['x-content-type-options'] = [{
