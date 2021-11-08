@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
-  # For all Forbidden messages, send a 404 response and get the error.html returned to user
+  # For all Forbidden messages, send a 404 response and sends error.html to the user
   custom_error_response {
     error_caching_min_ttl    = "10"
     error_code               = "403"

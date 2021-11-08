@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "lambda-role-attach" {
   policy_arn  = aws_iam_policy.GetUpdateVisitorsPolicy.arn
 }
 
-# Create the policy for access to GraphQL API resource
+# Creates the policy for access to GraphQL API resource
 resource "aws_iam_role_policy" "visitor_counter_role_policy" {
   name        = "visitor_counter_role_policy"
   role        = aws_iam_role.visitor_counter_role.id

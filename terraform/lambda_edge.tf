@@ -97,7 +97,7 @@ POL
 }
 
 # Attaches the Lambda policy to the role for Lambda function call
-resource "aws_iam_role_policy_attachment" "security_headers_lambda_role-attach" {
+resource "aws_iam_role_policy_attachment" "security_headers_lambda_role_attach" {
   role       = aws_iam_role.security_headers_lambda_role.name
   policy_arn = aws_iam_policy.SecurityHeadersPolicy.arn
 }

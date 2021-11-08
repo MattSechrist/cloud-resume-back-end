@@ -10,7 +10,7 @@ resource "aws_s3_bucket_policy" "public_bucket_policy" {
  
   bucket            = each.value
 
-  # This policy inclues the custom header to stop direct S# bucket access from a browser without it
+  # This policy inclues the custom header to stop direct S3 bucket access from a browser without it
   policy            = jsonencode({
     Version         = "2012-10-17"
     Id              = "S3_Static_Website_Bucket_Policy"
