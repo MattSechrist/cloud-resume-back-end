@@ -5,6 +5,10 @@
 #attach to appsync - appsync_visitor_counter_api
 #turn on bot control
 
+#Turned this as it was too expensive and not really necessary - I wanted to learn how to block Introspection and nested queries. 
+# I used the 6 standard free Managed ACL rules, along with my own custom AppSync-query specific rule shown below:
+# Ultimately with API Gateway, I was able to meet my most pressing security concern of throttling requests.
+
 #visitor_counter rule JSON
 #
 # "Name": "visitor_counter",
