@@ -1,11 +1,4 @@
-#create WebACL
-#block when no rules are found by default
-#Create both rules - 5 free default rules, 1 created by me
-#turn off at appsync
-#attach to appsync - appsync_visitor_counter_api
-#turn on bot control
-
-#Turned this as it was too expensive and not really necessary - I wanted to learn how to block Introspection and nested queries. 
+# Disabled this tf file as it was too expensive and not really necessary - I wanted to learn how to block Introspection and nested queries. 
 # I used the 6 standard free Managed ACL rules, along with my own custom AppSync-query specific rule shown below:
 # Ultimately with API Gateway, I was able to meet my most pressing security concern of throttling requests.
 
